@@ -1,7 +1,7 @@
 ```
-GET /
-GET /read/{id}
-POST /create
-PUT/PATCH /update/{id}
-DELETE /delete/{id}
+GET api/users
+GET api/users/{id}
+POST api/users
+PUT api/users/{id}
+DELETE api/users/{id}
 ```
