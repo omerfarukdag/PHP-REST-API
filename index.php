@@ -7,24 +7,29 @@ require_once __DIR__ . '/app/router.php';
 function get_data(): ?array
 {
     $data = json_decode(file_get_contents('php://input'), true);
+    if (empty($data['name']) || empty($data['country']) || empty($data['age'])) {
+        http_response_code(400);
+        exit(json_encode(array('status' => 400, 'message' => 'Bad request')));
+    }
+    $result = [];
     foreach ($data as $key => $value) {
         if (in_array($key, ['name', 'country'])) {
-            if (!is_string($value) || empty($value)) {
+            if (!is_string($value)) {
                 http_response_code(400);
                 exit(json_encode(array('status' => 400, 'message' => 'Bad request')));
             } else {
-                $data[$key] = htmlspecialchars(trim($value));
+                $result[$key] = htmlspecialchars(trim($value));
             }
         } else if ($key == 'age') {
-            if (!is_numeric($value) || empty($value)) {
+            if (!is_numeric($value)) {
                 http_response_code(400);
                 exit(json_encode(array('status' => 400, 'message' => 'Bad request')));
             } else {
-                $data[$key] = htmlspecialchars(trim($value));
+                $result[$key] = htmlspecialchars(trim($value));
             }
         }
     }
-    return $data;
+    return $result;
 }
 
 get('/api/users', function () {
