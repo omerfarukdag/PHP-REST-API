@@ -9,3 +9,16 @@ try {
 } catch (PDOException $e) {
     exit(json_encode(array('status' => 500, 'message' => 'Database connection error' . $e->getMessage())));
 }
+
+function user_exists($id): bool
+{
+    global $db;
+    $query = $db->prepare('SELECT * FROM users WHERE id = ?');
+    $query->execute([$id]);
+    $query->fetch(PDO::FETCH_ASSOC);
+    if ($query->rowCount()) {
+        return true;
+    } else {
+        return false;
+    }
+}
